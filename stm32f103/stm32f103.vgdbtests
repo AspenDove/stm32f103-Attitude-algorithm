@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<VisualGDBTestSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Tests>
+    <Test xsi:type="EmbeddedIntegrationTest">
+      <Name>RecordedIntegrationTest1</Name>
+      <Steps>
+        <TestStep xsi:type="CreateBreakpoint">
+          <BreakpointRequest xsi:type="Function">
+            <Name>main</Name>
+          </BreakpointRequest>
+          <BreakpointNumber>1</BreakpointNumber>
+        </TestStep>
+        <TestStep xsi:type="ResumeExecution">
+          <Type>Continue</Type>
+          <ExpectedBreakpoint>1</ExpectedBreakpoint>
+        </TestStep>
+      </Steps>
+    </Test>
+  </Tests>
+</VisualGDBTestSet>
