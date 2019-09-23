@@ -52,15 +52,15 @@ float32_t data_matrix_P_prev[16] = { 1,0,0,0,
 									 0,1,0,0,
 									 0,0,1,0,
 									 0,0,0,1 };
-float32_t data_matrix_ra[9] = { 0.008,0,0,
-								0,0.008,0,
-								0,0,0.008 };
-float32_t data_matrix_rm[9] = { 0.05,0,0,
-								0,0.05,0,
-								0,0,0.05 };
-float32_t data_matrix_rg[9] = { 0.01,0,0,
-								0,0.01,0,
-								0,0,0.01 };
+float32_t data_matrix_ra[9] = { 0.08,0,0,
+								0,0.08,0,
+								0,0,0.08 };
+float32_t data_matrix_rm[9] = { 0.5,0,0,
+								0,0.5,0,
+								0,0,0.5 };
+float32_t data_matrix_rg[9] = { 0.1,0,0,
+								0,0.1,0,
+								0,0,0.1 };
 float32_t data_matrix_R[64] = { 0,0,0,0,0,0,0,0,
 								0,0,0,0,0,0,0,0,
 								0,0,0,0,0,0,0,0,
@@ -91,17 +91,8 @@ float32_t temp_matrix_64[64];
 float32_t temp_value;
 float32_t X_norm;
 float32_t magnitude;
-float32_t dt = 0.005;
-uint8_t firstRun = 1; //first run flag;
-
-void getGyroData();
-void getAccelData();
-void getCompassData();
-void runKalmanFilter();
-void initMatrix();
-void getRawCompassData();
-void calibrateMag();
-void getRawGyroData();
+float32_t dt = 0.08;
+uint32_t firstRun = 1; //first run flag;
 
 
 void initMatrix() {

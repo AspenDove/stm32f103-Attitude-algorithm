@@ -239,12 +239,27 @@ void IMU_Calibrate(void)
 	uint32_t samples = 200;
 	const float mag_scale = 0.15f;
 
-	for (uint32_t i = 0; i != samples; ++i)
+	for (uint32_t i = 0; i != samples;)
 	{
-		gyro_offset.x += getshort(Single_Read(GYRO_ADDRESS, GYRO_XOUT_L), Single_Read(GYRO_ADDRESS, GYRO_XOUT_H))*gyro_scale;
-		gyro_offset.y += getshort(Single_Read(GYRO_ADDRESS, GYRO_YOUT_L), Single_Read(GYRO_ADDRESS, GYRO_YOUT_H))*gyro_scale;
-		gyro_offset.z += getshort(Single_Read(GYRO_ADDRESS, GYRO_ZOUT_L), Single_Read(GYRO_ADDRESS, GYRO_ZOUT_H))*gyro_scale;
+		if (Single_Read(MAG_ADDRESS, 0x02) & 1 == 1)
+		{
+			gyro_offset.x += getshort(Single_Read(GYRO_ADDRESS, GYRO_XOUT_L), Single_Read(GYRO_ADDRESS, GYRO_XOUT_H))*gyro_scale;
+			gyro_offset.y += getshort(Single_Read(GYRO_ADDRESS, GYRO_YOUT_L), Single_Read(GYRO_ADDRESS, GYRO_YOUT_H))*gyro_scale;
+			gyro_offset.z += getshort(Single_Read(GYRO_ADDRESS, GYRO_ZOUT_L), Single_Read(GYRO_ADDRESS, GYRO_ZOUT_H))*gyro_scale;
+
+			MagConst[0] = (getshort(Single_Read(MAG_ADDRESS, MAG_XOUT_L), Single_Read(MAG_ADDRESS, MAG_XOUT_H)) *mag_scale - mag_offset.x)*mag_sca.x;
+			MagConst[1] = (getshort(Single_Read(MAG_ADDRESS, MAG_YOUT_L), Single_Read(MAG_ADDRESS, MAG_YOUT_H)) *mag_scale - mag_offset.y)*mag_sca.y;
+			MagConst[2] = (getshort(Single_Read(MAG_ADDRESS, MAG_ZOUT_L), Single_Read(MAG_ADDRESS, MAG_ZOUT_H)) *mag_scale - mag_offset.z)*mag_sca.z;
+			Single_Read(MAG_ADDRESS, 0x09);
+			HAL_Delay(10);
+			++i;
+		}
 	}
+
+	MagConst[0] /= samples;
+	MagConst[1] /= samples;
+	MagConst[2] /= samples;
+
 	gyro_offset.x /= samples;
 	gyro_offset.y /= samples;
 	gyro_offset.z /= samples;
@@ -284,7 +299,7 @@ void IMU_Calibrate(void)
 	//}
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 
-	for (uint32_t i = 0; i != samples; ++i)
+	for (uint32_t i = 0; i != samples;)
 	{
 		if (Single_Read(MAG_ADDRESS, 0x02) & 1 == 1)
 		{
@@ -300,6 +315,7 @@ void IMU_Calibrate(void)
 			mag_min.x = std::min(mag.x, mag_min.x);
 			mag_min.y = std::min(mag.y, mag_min.y);
 			mag_min.z = std::min(mag.z, mag_min.z);
+			++i;
 		}
 		HAL_Delay(10);
 	}
@@ -316,6 +332,10 @@ void IMU_Calibrate(void)
 	mag_sca.x = ave_delta / delta_x;
 	mag_sca.y = ave_delta / delta_y;
 	mag_sca.z = ave_delta / delta_z;
+
+	MagConst[0] = (MagConst[0] - mag_offset.x)*mag_sca.x;
+	MagConst[1] = (MagConst[1] - mag_offset.y)*mag_sca.y;
+	MagConst[2] = (MagConst[2] - mag_offset.z)*mag_sca.z;
 
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
 }

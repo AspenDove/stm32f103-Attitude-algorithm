@@ -52,19 +52,69 @@
       <CLanguageStandard>C11</CLanguageStandard>
       <SupportExceptions>true</SupportExceptions>
       <SupportRTTI>true</SupportRTTI>
+      <AdditionalIncludeDirectories>;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG=1;RELEASE=1;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableAddressSanitizer>false</EnableAddressSanitizer>
+      <EnableThreadSanitizer>false</EnableThreadSanitizer>
+      <EnableLeakSanitizer>false</EnableLeakSanitizer>
     </ClCompile>
+    <ToolchainSettingsContainer>
+      <ARMCPU>cortex-m3</ARMCPU>
+    </ToolchainSettingsContainer>
+    <Link>
+      <AdditionalLinkerInputs>;%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
+      <LibrarySearchDirectories>;%(Link.LibrarySearchDirectories)</LibrarySearchDirectories>
+      <AdditionalLibraryNames>;%(Link.AdditionalLibraryNames)</AdditionalLibraryNames>
+      <LinkerScript>STM32F103C8_flash.lds</LinkerScript>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <LinkerScript Include="STM32F103C8_flash.lds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
+    <ClCompile Include="CommonTables\arm_common_tables.c" />
+    <ClCompile Include="CommonTables\arm_const_structs.c" />
     <ClCompile Include="delay.cpp" />
+    <ClCompile Include="FastMathFunctions\arm_cos_f32.c" />
+    <ClCompile Include="FastMathFunctions\arm_cos_q15.c" />
+    <ClCompile Include="FastMathFunctions\arm_cos_q31.c" />
+    <ClCompile Include="FastMathFunctions\arm_sin_f32.c" />
+    <ClCompile Include="FastMathFunctions\arm_sin_q15.c" />
+    <ClCompile Include="FastMathFunctions\arm_sin_q31.c" />
+    <ClCompile Include="FastMathFunctions\arm_sqrt_q15.c" />
+    <ClCompile Include="FastMathFunctions\arm_sqrt_q31.c" />
     <ClCompile Include="IMU.cpp" />
     <ClCompile Include="KalmanFliter.cpp" />
     <ClCompile Include="LEDBlink.cpp" />
     <ClCompile Include="MahonyAHRS.cpp" />
+    <ClCompile Include="MatrixFunctions\arm_mat_add_f32.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_add_q15.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_add_q31.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_cmplx_mult_f32.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_cmplx_mult_q15.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_cmplx_mult_q31.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_init_f32.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_init_q15.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_init_q31.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_inverse_f32.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_inverse_f64.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_mult_f32.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_mult_fast_q15.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_mult_fast_q31.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_mult_q15.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_mult_q31.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_scale_f32.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_scale_q15.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_scale_q31.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_sub_f32.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_sub_q15.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_sub_q31.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_trans_f32.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_trans_q15.c" />
+    <ClCompile Include="MatrixFunctions\arm_mat_trans_q31.c" />
     <ClCompile Include="system_stm32f1xx.c" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="usart.cpp" />
