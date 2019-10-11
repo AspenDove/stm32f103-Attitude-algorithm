@@ -278,7 +278,6 @@ void IMU_Calibrate(void)
 	IMU_Mag mag_max = { -10000,-10000,-10000 };
 	IMU_Mag mag_min = { 10000,10000,10000 };
 
-	HAL_Delay(2000);
 	samples = 500;
 
 	//for (ii = 0; ii < sample_count; ii++) {
@@ -290,6 +289,7 @@ void IMU_Calibrate(void)
 	//	HAL_Delay(200);
 	//}
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+	HAL_Delay(2000);
 
 	for (uint32_t i = 0; i != samples;)
 	{

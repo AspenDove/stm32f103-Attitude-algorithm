@@ -56,14 +56,18 @@ extern IMU_Angle angle;
 #define MAG_ADDRESS    0x18
 #define ACCEL_ADDRESS  0xD0
 
-#define SCL_H    GPIOB->BSRR = GPIO_PIN_6
-#define SCL_L    GPIOB->BRR  = GPIO_PIN_6
+#define GPIO     GPIOB
+#define SCL      GPIO_PIN_6
+#define SDA      GPIO_PIN_7
 
-#define SDA_H    GPIOB->BSRR = GPIO_PIN_7
-#define SDA_L    GPIOB->BRR  = GPIO_PIN_7
+#define SCL_H    GPIO->BSRR = SCL
+#define SCL_L    GPIO->BRR  = SCL
 
-#define SCL_read GPIOB->IDR  & GPIO_PIN_6
-#define SDA_read GPIOB->IDR  & GPIO_PIN_7
+#define SDA_H    GPIO->BSRR = SDA
+#define SDA_L    GPIO->BRR  = SDA
+
+#define SCL_read GPIO->IDR  & SCL
+#define SDA_read GPIO->IDR  & SDA
 
 void IMU_Init(void);
 bool IMU_Measure(void);

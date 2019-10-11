@@ -60,11 +60,13 @@ void HAL_SYSTICK_Callback(void)
 {
 
 }
-extern float32_t data_matrix_X_prev[4];
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	static uint8_t txData[300];
 	bool updated = IMU_Measure();
+	MahonyAHRSupdate(accel, gyro, mag, &angle, updated);
+
 	if (updated)
 	{
 		//sprintf((char*)txData, "%.3lf %.3lf %.3lf %.3lf %.3lf %.3lf %.3lf %.3lf %.3lf\r\n",
@@ -74,10 +76,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 		//HAL_UART_Transmit_DMA(&huart1, txData, strlen((const char*)txData));
 		//for d3d9 visualization
-	//	float32_t q[4] = { q0,q1,q2,q3 };
-	//	HAL_UART_Transmit_DMA(&huart1, (uint8_t*)(&q), sizeof(q));
+
+		//float32_t q[4] = { q0,q1,q2,q3 };
+		//HAL_UART_Transmit_DMA(&huart1, (uint8_t*)(&q), sizeof(q));
 	}
-	MahonyAHRSupdate(accel, gyro, mag, &angle, updated);
 	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 }
 

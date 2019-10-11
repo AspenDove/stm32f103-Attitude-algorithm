@@ -32,20 +32,8 @@
       <UniqueIdentifier>{cb7691eb-fa5a-450e-b5a4-996f5f29345d}</UniqueIdentifier>
       <Extensions>vgdbtests</Extensions>
     </Filter>
-    <Filter Include="Source files\CommonTables">
-      <UniqueIdentifier>{1744eadb-3ec3-419b-bb06-ae9c1263ef67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\FastMathFunctions">
-      <UniqueIdentifier>{a753276c-cd0b-4f6a-8c4c-a684cec549f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\MatrixFunctions">
-      <UniqueIdentifier>{f4b48851-bf4a-4c50-ac85-d20d5f977db1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LEDBlink.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="system_stm32f1xx.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -406,110 +394,8 @@
     <ClCompile Include="$(BSP_ROOT)\STM32F1xxxx\StartupFiles\startup_stm32f103xb.c">
       <Filter>Source files\Device-specific files</Filter>
     </ClCompile>
-    <ClCompile Include="CommonTables\arm_common_tables.c">
-      <Filter>Source files\CommonTables</Filter>
-    </ClCompile>
-    <ClCompile Include="CommonTables\arm_const_structs.c">
-      <Filter>Source files\CommonTables</Filter>
-    </ClCompile>
-    <ClCompile Include="FastMathFunctions\arm_cos_f32.c">
-      <Filter>Source files\FastMathFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="FastMathFunctions\arm_cos_q15.c">
-      <Filter>Source files\FastMathFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="FastMathFunctions\arm_cos_q31.c">
-      <Filter>Source files\FastMathFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="FastMathFunctions\arm_sin_f32.c">
-      <Filter>Source files\FastMathFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="FastMathFunctions\arm_sin_q15.c">
-      <Filter>Source files\FastMathFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="FastMathFunctions\arm_sin_q31.c">
-      <Filter>Source files\FastMathFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="FastMathFunctions\arm_sqrt_q15.c">
-      <Filter>Source files\FastMathFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="FastMathFunctions\arm_sqrt_q31.c">
-      <Filter>Source files\FastMathFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_add_f32.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_add_q15.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_add_q31.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_cmplx_mult_f32.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_cmplx_mult_q15.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_cmplx_mult_q31.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_init_f32.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_init_q15.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_init_q31.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_inverse_f32.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_inverse_f64.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_mult_f32.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_mult_fast_q15.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_mult_fast_q31.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_mult_q15.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_mult_q31.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_scale_f32.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_scale_q15.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_scale_q31.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_sub_f32.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_sub_q15.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_sub_q31.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_trans_f32.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_trans_q15.c">
-      <Filter>Source files\MatrixFunctions</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrixFunctions\arm_mat_trans_q31.c">
-      <Filter>Source files\MatrixFunctions</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
