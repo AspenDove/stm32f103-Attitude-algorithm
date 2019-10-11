@@ -1,8 +1,9 @@
 ﻿#include "IMU.h"
 #include "delay.h"
 #include "algorithm"
-IMU_Accel accel, rvector;
-float rangle;
+
+
+IMU_Accel accel;
 IMU_Gyro  gyro, gyro_offset = { 0 };
 IMU_Mag   mag, mag_asa = { 0 }, mag_offset = { 0 }, mag_sca = { 1,1,1 };
 IMU_Angle angle;
@@ -231,8 +232,6 @@ bool IMU_Measure(void)
 	return false;
 }
 
-extern float32_t MagConst[3];
-
 void IMU_Calibrate(void)
 {
 	const float gyro_scale = 500.f *(PI / 180.f) / 32767.f;
@@ -247,18 +246,11 @@ void IMU_Calibrate(void)
 			gyro_offset.y += getshort(Single_Read(GYRO_ADDRESS, GYRO_YOUT_L), Single_Read(GYRO_ADDRESS, GYRO_YOUT_H))*gyro_scale;
 			gyro_offset.z += getshort(Single_Read(GYRO_ADDRESS, GYRO_ZOUT_L), Single_Read(GYRO_ADDRESS, GYRO_ZOUT_H))*gyro_scale;
 
-			MagConst[0] = (getshort(Single_Read(MAG_ADDRESS, MAG_XOUT_L), Single_Read(MAG_ADDRESS, MAG_XOUT_H)) *mag_scale - mag_offset.x)*mag_sca.x;
-			MagConst[1] = (getshort(Single_Read(MAG_ADDRESS, MAG_YOUT_L), Single_Read(MAG_ADDRESS, MAG_YOUT_H)) *mag_scale - mag_offset.y)*mag_sca.y;
-			MagConst[2] = (getshort(Single_Read(MAG_ADDRESS, MAG_ZOUT_L), Single_Read(MAG_ADDRESS, MAG_ZOUT_H)) *mag_scale - mag_offset.z)*mag_sca.z;
 			Single_Read(MAG_ADDRESS, 0x09);
 			HAL_Delay(10);
 			++i;
 		}
 	}
-
-	MagConst[0] /= samples;
-	MagConst[1] /= samples;
-	MagConst[2] /= samples;
 
 	gyro_offset.x /= samples;
 	gyro_offset.y /= samples;
@@ -332,10 +324,6 @@ void IMU_Calibrate(void)
 	mag_sca.x = ave_delta / delta_x;
 	mag_sca.y = ave_delta / delta_y;
 	mag_sca.z = ave_delta / delta_z;
-
-	MagConst[0] = (MagConst[0] - mag_offset.x)*mag_sca.x;
-	MagConst[1] = (MagConst[1] - mag_offset.y)*mag_sca.y;
-	MagConst[2] = (MagConst[2] - mag_offset.z)*mag_sca.z;
 
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
 }

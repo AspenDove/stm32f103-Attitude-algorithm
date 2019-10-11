@@ -65,40 +65,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	static uint8_t txData[300];
 	bool updated = IMU_Measure();
-	//if (updated)
-	//{
-		sprintf((char*)txData, "%.lf %.lf %.lf %.lf %.lf %.lf %.lf %.lf %.lf\r\n",
-			accel.x, accel.y, accel.z,
-			gyro.x, gyro.y, gyro.z,
-			mag.x, mag.y, mag.z);
+	if (updated)
+	{
+		//sprintf((char*)txData, "%.3lf %.3lf %.3lf %.3lf %.3lf %.3lf %.3lf %.3lf %.3lf\r\n",
+		//	accel.x, accel.y, accel.z,
+		//	gyro.x, gyro.y, gyro.z,
+		//	mag.x, mag.y, mag.z);
 
-	//	HAL_UART_Transmit_DMA(&huart1, txData, strlen((const char*)txData));
-	//	//for d3d9 visualization
-	////	float32_t q[4] = { q0,q1,q2,q3 };
-	////	HAL_UART_Transmit_DMA(&huart1, (uint8_t*)(&q), sizeof(q));
-	//}
-	Axyz[0] = accel.x;
-	Axyz[1] = accel.y;
-	Axyz[2] = accel.z;
-
-	Gxyz[0] = gyro.x;
-	Gxyz[1] = gyro.y;
-	Gxyz[2] = gyro.z;
-
-	Mxyz[0] = mag.x;
-	Mxyz[1] = mag.y;
-	Mxyz[2] = mag.z;
-	//MahonyAHRSupdate(gyro.x, gyro.y, gyro.z, accel.x, accel.y, accel.z, mag.y, mag.x, -mag.z, updated);
-	//runKalmanFilter();
-	//float32_t q0 = data_matrix_X_prev[3];
-	//float32_t q1 = data_matrix_X_prev[0];
-	//float32_t q2 = data_matrix_X_prev[1];
-	//float32_t q3 = data_matrix_X_prev[2];
-
-	//angle.roll = atan2f(q2 * q3 + q0 * q1, 0.5f - (q1*q1 + q2*q2));
-	//angle.pitch = asinf(2.f*(q0 * q2 - q1 * q3));
-	//angle.yaw = atan2f(q1 * q2 + q0 * q3, 0.5f - (q2*q2 + q3*q3));
-	//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+		//HAL_UART_Transmit_DMA(&huart1, txData, strlen((const char*)txData));
+		//for d3d9 visualization
+	//	float32_t q[4] = { q0,q1,q2,q3 };
+	//	HAL_UART_Transmit_DMA(&huart1, (uint8_t*)(&q), sizeof(q));
+	}
+	MahonyAHRSupdate(accel, gyro, mag, &angle, updated);
+	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 }
 
 int main(void)
@@ -119,7 +99,6 @@ int main(void)
 	USART1_UART_Init();
 
 	IMU_Calibrate();
-	initMatrix();
 	GENERAL_TIMx_Init();
 	
 

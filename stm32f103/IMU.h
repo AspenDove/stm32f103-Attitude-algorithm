@@ -11,9 +11,8 @@ typedef struct
 	float pitch, roll, yaw;
 }IMU_Angle;
 
-extern IMU_Accel accel, rvector;
-extern float rangle;
-extern IMU_Gyro  gyro, gyro_offset;
+extern IMU_Accel accel;
+extern IMU_Gyro  gyro;
 extern IMU_Mag   mag;
 extern IMU_Angle angle;
 

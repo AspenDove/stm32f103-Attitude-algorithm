@@ -1,22 +1,7 @@
-//=====================================================================================================
-// MahonyAHRS.c
-//=====================================================================================================
-//
-// Madgwick's implementation of Mayhony's AHRS algorithm.
-// See: http://www.x-io.co.uk/node/8#open_source_ahrs_and_imu_algorithms
-//
-// Date			Author			Notes
-// 29/09/2011	SOH Madgwick    Initial release
-// 02/10/2011	SOH Madgwick	Optimised for reduced CPU load
-//
-//=====================================================================================================
-
 //---------------------------------------------------------------------------------------------------
 // Header files
 
 #include "MahonyAHRS.h"
-#include "IMU.h"
-#include <arm_math.h>
 
 //---------------------------------------------------------------------------------------------------
 // Definitions
@@ -43,8 +28,9 @@ float32_t invSqrt(float32_t x);
 
 //---------------------------------------------------------------------------------------------------
 // AHRS algorithm update
-
-void MahonyAHRSupdate(float32_t gx, float32_t gy, float32_t gz, float32_t ax, float32_t ay, float32_t az, float32_t mx, float32_t my, float32_t mz, bool updated) {
+void MahonyAHRSupdate(IMU_Accel acc, IMU_Gyro gyro, IMU_Mag mag, IMU_Angle* angle, bool updated)
+{
+	float32_t gx = gyro.x, gy = gyro.y, gz = gyro.z, ax = acc.x, ay = acc.y, az = acc.z, mx = mag.y, my = mag.x, mz = -mag.z;
 	float32_t recipNorm;
 	float32_t q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;
 	float32_t hx, hy, bx, bz;
@@ -53,13 +39,15 @@ void MahonyAHRSupdate(float32_t gx, float32_t gy, float32_t gz, float32_t ax, fl
 	float32_t qa, qb, qc;
 
 	// Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
-	if (!updated) {
-		MahonyAHRSupdateIMU(gx, gy, gz, ax, ay, az);
+	if(!updated) 
+	{
+		MahonyAHRSupdateIMU(acc, gyro, angle);
 		return;
 	}
 
 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
-	if (!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) {
+	if(!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) 
+	{
 
 		// Normalise accelerometer measurement
 		recipNorm = invSqrt(ax * ax + ay * ay + az * az);
@@ -90,7 +78,6 @@ void MahonyAHRSupdate(float32_t gx, float32_t gy, float32_t gz, float32_t ax, fl
 		hy = 2.0f * (mx * (q1q2 + q0q3) + my * (0.5f - q1q1 - q3q3) + mz * (q2q3 - q0q1));
 		arm_sqrt_f32(hx * hx + hy * hy, &bx);
 		bz = 2.0f * (mx * (q1q3 - q0q2) + my * (q2q3 + q0q1) + mz * (0.5f - q1q1 - q2q2));
-
 		// Estimated direction of gravity and magnetic field
 		halfvx = q1q3 - q0q2;
 		halfvy = q0q1 + q2q3;
@@ -105,7 +92,8 @@ void MahonyAHRSupdate(float32_t gx, float32_t gy, float32_t gz, float32_t ax, fl
 		halfez = (ax * halfvy - ay * halfvx) + (mx * halfwy - my * halfwx);
 
 		// Compute and apply integral feedback if enabled
-		if (twoKi > 0.0f) {
+		if(twoKi > 0.0f)
+		{
 			integralFBx += twoKi * halfex * (1.0f / sampleFreq);	// integral error scaled by Ki
 			integralFBy += twoKi * halfey * (1.0f / sampleFreq);
 			integralFBz += twoKi * halfez * (1.0f / sampleFreq);
@@ -113,7 +101,8 @@ void MahonyAHRSupdate(float32_t gx, float32_t gy, float32_t gz, float32_t ax, fl
 			gy += integralFBy;
 			gz += integralFBz;
 		}
-		else {
+		else 
+		{
 			integralFBx = 0.0f;	// prevent integral windup
 			integralFBy = 0.0f;
 			integralFBz = 0.0f;
@@ -144,28 +133,25 @@ void MahonyAHRSupdate(float32_t gx, float32_t gy, float32_t gz, float32_t ax, fl
 	q2 *= recipNorm;
 	q3 *= recipNorm;
 
-	recipNorm = invSqrt(q1 * q1 + q2 * q2 + q3 * q3);
-	rvector.x = q1*recipNorm;
-	rvector.y = q2*recipNorm;
-	rvector.z = q3*recipNorm;
-	rangle = 2 * acos(q0)* 57.29578f;
-
-	angle.roll = atan2f(q2 * q3 + q0 * q1, 0.5f - (q1*q1 + q2*q2));
-	angle.pitch = asinf(2.f*(q0 * q2 - q1 * q3));
-	angle.yaw = atan2f(q1 * q2 + q0 * q3, 0.5f - (q2*q2 + q3*q3));
+	angle->roll = atan2f(q2 * q3 + q0 * q1, 0.5f - (q1*q1 + q2*q2));
+	angle->pitch = asinf(2.f*(q0 * q2 - q1 * q3));
+	angle->yaw = atan2f(q1 * q2 + q0 * q3, 0.5f - (q2*q2 + q3*q3));
 }
 
 //---------------------------------------------------------------------------------------------------
 // IMU algorithm update
 
-void MahonyAHRSupdateIMU(float32_t gx, float32_t gy, float32_t gz, float32_t ax, float32_t ay, float32_t az) {
+void MahonyAHRSupdateIMU(IMU_Accel acc, IMU_Gyro gyro, IMU_Angle* angle)
+{
+	float32_t gx = gyro.x, gy = gyro.y, gz = gyro.z, ax = acc.x, ay = acc.y, az = acc.z;
 	float32_t recipNorm;
 	float32_t halfvx, halfvy, halfvz;
 	float32_t halfex, halfey, halfez;
 	float32_t qa, qb, qc;
 
 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
-	if (!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) {
+	if(!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) 
+	{
 
 		// Normalise accelerometer measurement
 		recipNorm = invSqrt(ax * ax + ay * ay + az * az);
@@ -184,7 +170,8 @@ void MahonyAHRSupdateIMU(float32_t gx, float32_t gy, float32_t gz, float32_t ax,
 		halfez = (ax * halfvy - ay * halfvx);
 
 		// Compute and apply integral feedback if enabled
-		if (twoKi > 0.0f) {
+		if(twoKi > 0.0f)
+		{
 			integralFBx += twoKi * halfex * (1.0f / sampleFreq);	// integral error scaled by Ki
 			integralFBy += twoKi * halfey * (1.0f / sampleFreq);
 			integralFBz += twoKi * halfez * (1.0f / sampleFreq);
@@ -192,7 +179,8 @@ void MahonyAHRSupdateIMU(float32_t gx, float32_t gy, float32_t gz, float32_t ax,
 			gy += integralFBy;
 			gz += integralFBz;
 		}
-		else {
+		else 
+		{
 			integralFBx = 0.0f;	// prevent integral windup
 			integralFBy = 0.0f;
 			integralFBz = 0.0f;
@@ -223,15 +211,9 @@ void MahonyAHRSupdateIMU(float32_t gx, float32_t gy, float32_t gz, float32_t ax,
 	q2 *= recipNorm;
 	q3 *= recipNorm;
 
-	recipNorm = invSqrt(q1 * q1 + q2 * q2 + q3 * q3);
-	rvector.x = q1*recipNorm;
-	rvector.y = q2*recipNorm;
-	rvector.z = q3*recipNorm;
-	rangle = 2 * acos(q0)* 57.29578f;
-
-	angle.roll = atan2f(q2 * q3 + q0 * q1, 0.5f - (q1*q1 + q2*q2));
-	angle.pitch = asinf(2.f*(q0 * q2 - q1 * q3));
-	angle.yaw = atan2f(q1 * q2 + q0 * q3, 0.5f - (q2*q2 + q3*q3));
+	angle->roll = atan2f(q2 * q3 + q0 * q1, 0.5f - (q1*q1 + q2*q2));
+	angle->pitch = asinf(2.f*(q0 * q2 - q1 * q3));
+	angle->yaw = atan2f(q1 * q2 + q0 * q3, 0.5f - (q2*q2 + q3*q3));
 }
 
 //---------------------------------------------------------------------------------------------------

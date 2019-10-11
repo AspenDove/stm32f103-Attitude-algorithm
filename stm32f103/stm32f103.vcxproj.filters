@@ -406,9 +406,6 @@
     <ClCompile Include="$(BSP_ROOT)\STM32F1xxxx\StartupFiles\startup_stm32f103xb.c">
       <Filter>Source files\Device-specific files</Filter>
     </ClCompile>
-    <ClCompile Include="KalmanFliter.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="CommonTables\arm_common_tables.c">
       <Filter>Source files\CommonTables</Filter>
     </ClCompile>
@@ -535,9 +532,6 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="timer.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="KalmanFilter.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -87,7 +87,6 @@
     <ClCompile Include="FastMathFunctions\arm_sqrt_q15.c" />
     <ClCompile Include="FastMathFunctions\arm_sqrt_q31.c" />
     <ClCompile Include="IMU.cpp" />
-    <ClCompile Include="KalmanFliter.cpp" />
     <ClCompile Include="LEDBlink.cpp" />
     <ClCompile Include="MahonyAHRS.cpp" />
     <ClCompile Include="MatrixFunctions\arm_mat_add_f32.c" />
@@ -118,7 +117,6 @@
     <ClCompile Include="system_stm32f1xx.c" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="usart.cpp" />
-    <ClInclude Include="KalmanFilter.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="usart.h" />
     <None Include="stm32.props" />

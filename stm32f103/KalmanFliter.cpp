@@ -52,12 +52,12 @@ float32_t data_matrix_P_prev[16] = { 1,0,0,0,
 									 0,1,0,0,
 									 0,0,1,0,
 									 0,0,0,1 };
-float32_t data_matrix_ra[9] = { 0.08,0,0,
-								0,0.08,0,
-								0,0,0.08 };
-float32_t data_matrix_rm[9] = { 0.5,0,0,
-								0,0.5,0,
-								0,0,0.5 };
+float32_t data_matrix_ra[9] = { 0.008,0,0,
+								0,0.008,0,
+								0,0,0.008 };
+float32_t data_matrix_rm[9] = { 0.005,0,0,
+								0,0.005,0,
+								0,0,0.005 };
 float32_t data_matrix_rg[9] = { 0.1,0,0,
 								0,0.1,0,
 								0,0,0.1 };
@@ -154,7 +154,7 @@ void runKalmanFilter() {
 	/*step 1-> calculate A ->state transition matrix*/
 	/*temp1 = [gyro(1)*pi/180;gyro(2)*pi/180;gyro(3)*pi/180];*/
 	for (int i = 0; i<3; i++) {
-		temp_vector[i] = Gxyz[i] * M_PI / 180;
+		temp_vector[i] = Gxyz[i];
 	}
 	/*magnitude = norm(temp1);*/
 	temp_value = temp_vector[0] * temp_vector[0] + temp_vector[1] * temp_vector[1] + temp_vector[2] * temp_vector[2];

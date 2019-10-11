@@ -1,17 +1,8 @@
-//=====================================================================================================
-// MahonyAHRS.h
-//=====================================================================================================
-//
-// Madgwick's implementation of Mayhony's AHRS algorithm.
-// See: http://www.x-io.co.uk/node/8#open_source_ahrs_and_imu_algorithms
-//
-// Date			Author			Notes
-// 29/09/2011	SOH Madgwick    Initial release
-// 02/10/2011	SOH Madgwick	Optimised for reduced CPU load
-//
-//=====================================================================================================
-#ifndef MahonyAHRS_h
-#define MahonyAHRS_h
+#ifndef _MahonyAHRS_
+#define _MahonyAHRS_
+
+#include "IMU.h"
+#include <arm_math.h>
 
 //----------------------------------------------------------------------------------------------------
 // Variable declaration
@@ -23,10 +14,7 @@ extern volatile float q0, q1, q2, q3;	// quaternion of sensor frame relative to 
 //---------------------------------------------------------------------------------------------------
 // Function declarations
 
-void MahonyAHRSupdate(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz,bool updated);
-void MahonyAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, float az);
+void MahonyAHRSupdate(IMU_Accel acc, IMU_Gyro gyro, IMU_Mag mag, IMU_Angle* angle, bool updated);
+void MahonyAHRSupdateIMU(IMU_Accel acc, IMU_Gyro gyro, IMU_Angle* angle);
 
-#endif
-//=====================================================================================================
-// End of file
-//=====================================================================================================
+#endif //_MahonyAHRS_
